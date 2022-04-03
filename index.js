@@ -7,6 +7,7 @@ const normalizeAddressWith0x =
   require("@celo/utils/lib/address").normalizeAddressWith0x;
 const extractAttestationCodeFromMessage =
   require("@celo/utils/lib/attestations").extractAttestationCodeFromMessage;
+const BigNumber = require('bignumber.js');
 
 require("dotenv").config();
 
@@ -236,9 +237,18 @@ async function verify(contractkit, base64Code) {
   }
 }
 
-// NOTE: this is currently a janky way of getting a prefix code for alfajores, need to update for mainnet
-const getSecurityPrefix = (attestationToComplete) =>
-  attestationToComplete.name[10];
+function hashAddressToSingleDigit(address) {
+  return new BigNumber(address.toLowerCase()).modulo(10).toNumber()
+}
+
+const getSecurityPrefix = (attestationToComplete) => {
+  return `${hashAddressToSingleDigit(attestationToComplete.issuer)}`
+}
+
+// // NOTE: this is currently a janky way of getting a prefix code for alfajores, need to update for mainnet
+// const getSecurityPrefix = (attestationToComplete) =>
+//   attestationToComplete.name[10];
+
 
 // lookup the phoneHash and pepper for given account
 async function lookup() {

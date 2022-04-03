@@ -20,11 +20,12 @@
   },
   "homepage": "https://github.com/critesjosh/register-number#readme",
   "dependencies": {
-    "@celo/base": "^1.5.0",
-    "@celo/contractkit": "^1.5.0",
-    "@celo/identity": "^1.5.1",
-    "@celo/utils": "^1.5.0",
-    "dotenv": "^10.0.0",
-    "web3": "^1.6.1"
+    "@celo/base": "^1.5.2",
+    "@celo/contractkit": "^1.5.2",
+    "@celo/identity": "^1.5.2",
+    "@celo/utils": "^1.5.2",
+    "bignumber.js": "^9.0.2",
+    "dotenv": "^16.0.0",
+    "web3": "^1.7.1"
   }
 }
