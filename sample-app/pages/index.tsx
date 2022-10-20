@@ -97,10 +97,10 @@ function App () {
         address,
         authSigner,
         serviceContext,
-        // undefined,
-        // undefined,
-        // undefined,
-        // new WebBlsBlindingClient(serviceContext.odisPubKey)
+        undefined,
+        undefined,
+        undefined,
+        new WebBlsBlindingClient(serviceContext.odisPubKey)
       );
   
     return response;
