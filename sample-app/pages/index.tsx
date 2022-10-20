@@ -15,13 +15,11 @@ import Web3 from "web3";
 import { PrimaryButton, SecondaryButton, toast } from "../components";
 import '@celo-tools/use-contractkit/lib/styles.css';
 import { OdisUtils } from "@celo/identity";
+import { WebBlsBlindingClient } from "./bls-blinding-client";
 
 function App () {
   const {
     kit,
-    address,
-    network,
-    updateNetwork,
     connect,
     destroy,
     performActions,
@@ -31,6 +29,8 @@ function App () {
   let networkURL,
   phoneHash,
   pepper;
+
+  const address = "0x48522303E536B4299B57e2cC2F0f5fe85f8C316F"
 
   const [phoneNumber, setPhoneNumber] = useState("+19167470862");
 
@@ -88,28 +88,7 @@ function App () {
       contractKit: kit,
     };
   
-    switch (network.name) {
-      case NetworkNames.Alfajores:
-        odisUrl =
-          "https://us-central1-celo-phone-number-privacy.cloudfunctions.net";
-        odisPubKey =
-          "kPoRxWdEdZ/Nd3uQnp3FJFs54zuiS+ksqvOm9x8vY6KHPG8jrfqysvIRU0wtqYsBKA7SoAsICMBv8C/Fb2ZpDOqhSqvr/sZbZoHmQfvbqrzbtDIPvUIrHgRS0ydJCMsA";
-        break;
-      case NetworkNames.Mainnet:
-        odisUrl = "https://us-central1-celo-pgpnp-mainnet.cloudfunctions.net";
-        odisPubKey =
-          "FvreHfLmhBjwxHxsxeyrcOLtSonC9j7K3WrS4QapYsQH6LdaDTaNGmnlQMfFY04Bp/K4wAvqQwO9/bqPVCKf8Ze8OZo8Frmog4JY4xAiwrsqOXxug11+htjEe1pj4uMA";
-        break;
-      default:
-        console.log(
-          `Set the NETWORK environment variable to either 'alfajores' or 'mainnet'`
-        );
-    }
-  
-    const serviceContext: any = {
-      odisUrl,
-      odisPubKey,
-    };
+    const serviceContext = OdisUtils.Query.getServiceContext('alfajores')
   
     // TODO this is failing with Cannot find module 'util' - need to investigate what's going on
     const response =
@@ -117,7 +96,11 @@ function App () {
         phoneNumber,
         address,
         authSigner,
-        serviceContext
+        serviceContext,
+        // undefined,
+        // undefined,
+        // undefined,
+        // new WebBlsBlindingClient(serviceContext.odisPubKey)
       );
   
     return response;
@@ -139,7 +122,6 @@ function App () {
               Connect
             </SecondaryButton>
           )}
-          <div>{network.name}</div>
         </div>
         <div>
         <input
