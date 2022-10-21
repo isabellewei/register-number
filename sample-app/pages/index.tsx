@@ -21,16 +21,16 @@ function App () {
   const {
     kit,
     connect,
+    address,
     destroy,
     performActions,
     walletType,
+    updateNetwork
   } = useContractKit();
 
   let networkURL,
   phoneHash,
   pepper;
-
-  const address = "0x48522303E536B4299B57e2cC2F0f5fe85f8C316F"
 
   const [phoneNumber, setPhoneNumber] = useState("+19167470862");
 
@@ -44,7 +44,7 @@ function App () {
     let registeredAccount = await accountsContract.isAccount(address);
     if (!registeredAccount) {
       console.log("Registering account");
-      const receipt = await accountsContract.createAccount().sendAndWaitForReceipt()
+      const receipt = await accountsContract.createAccount().sendAndWaitForReceipt({from: address})
       console.log("Receipt: ", receipt);
     }
   
@@ -80,7 +80,6 @@ function App () {
     if (!address) {
       return null;
     }
-    let odisUrl, odisPubKey;
 
     let authMethod: any = OdisUtils.Query.AuthenticationMethod.WALLET_KEY
     const authSigner = {
@@ -88,9 +87,8 @@ function App () {
       contractKit: kit,
     };
   
-    const serviceContext = OdisUtils.Query.getServiceContext('alfajores')
-  
-    // TODO this is failing with Cannot find module 'util' - need to investigate what's going on
+    const serviceContext = OdisUtils.Query.getServiceContext('mainnet')
+ 
     const response =
       await OdisUtils.PhoneNumberIdentifier.getPhoneNumberIdentifier(
         phoneNumber,
